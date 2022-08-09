@@ -1,4 +1,10 @@
+# -*- coding: utf-8 -*-
+# if not type the first line, Chinese can not be used
+
+
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
 
 
 # open browser
@@ -25,7 +31,7 @@ element.parentNode.removeChild(element);
 """, element)
 
 
-# search a adress
+# search an adress
 
 # step 1. click button so that selenium can interact with the list
 
@@ -39,6 +45,24 @@ city = driver.find_element_by_class_name("list-available-item")
 
 city.click()
 
+# step 3. click search bar
 
+search_bar = driver.find_element_by_class_name("banner-form__new-search__select-block__search-object")
 
+search_bar.click()
 
+# step 4. type in input bar
+
+input_bar = driver.find_element_by_class_name("select-option__input")
+
+input_bar.send_keys(u"信義聯勤")
+
+# step 5. click option
+
+option = driver.find_element_by_class_name("select-option")
+
+# sleep (if not sleep, selenium would click before option show up)
+
+time.sleep(1)
+
+option.click()

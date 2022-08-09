@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-# if not type the first line, Chinese can not be used
 
 
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import time
 
 
@@ -21,17 +19,7 @@ url = "https://www.leju.com.tw"
 driver.get(url)
 
 
-# remove the title (just for fun)
-
-element = driver.find_element_by_tag_name("h2")
-
-driver.execute_script("""
-var element = arguments[0];
-element.parentNode.removeChild(element);
-""", element)
-
-
-# search an adress
+# search a adress
 
 # step 1. click button so that selenium can interact with the list
 
@@ -66,3 +54,17 @@ option = driver.find_element_by_class_name("select-option")
 time.sleep(1)
 
 option.click()
+
+
+# ----- enter next page -----
+
+
+# find sections
+
+main = driver.find_element_by_tag_name("main")
+
+container = main.find_element_by_class_name("container")
+
+sections = container.find_elements_by_tag_name("section")
+
+print(sections[1].text)

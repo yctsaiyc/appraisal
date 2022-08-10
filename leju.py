@@ -59,12 +59,45 @@ option.click()
 # ----- enter next page -----
 
 
-# find sections
+# remove sections that I don't need
 
-main = driver.find_element_by_tag_name("main")
+# 0. anchor: fixed
+
+index = driver.find_element_by_class_name("index")
+
+fixed = index.find_elements_by_xpath("*")[0]
+
+child_of_fixed = fixed.find_elements_by_xpath("*")
+
+# 1. middle part
+
+main = child_of_fixed[1]
 
 container = main.find_element_by_class_name("container")
 
 sections = container.find_elements_by_tag_name("section")
 
-print(sections[1].text)
+for section in sections:
+    if sections.index(section) != 1 and sections.index(section) != 4:
+        driver.execute_script("""
+            var section = arguments[0];
+            section.parentNode.removeChild(section)
+            """, section)
+
+# 2. lefthand side
+
+lefthandside = child_of_fixed[0]
+
+driver.execute_script("""
+    var lefthandside = arguments[0];
+    lefthandside.parentNode.removeChild(lefthandside)
+    """, lefthandside)
+
+# 3. righthand side
+
+leaflet_map = child_of_fixed[2]
+
+driver.execute_script("""
+    var leaflet_map = arguments[0];
+    leaflet_map.parentNode.removeChild(leaflet_map)
+    """, leaflet_map)

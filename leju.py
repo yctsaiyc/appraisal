@@ -11,6 +11,9 @@ chromedriver_path = "C:\Users\user\Downloads\chromedriver"
 
 driver = webdriver.Chrome(chromedriver_path)
 
+# maximize window
+
+driver.maximize_window()
 
 # enter website
 
@@ -61,6 +64,12 @@ option.click()
 
 # remove sections that I don't need
 
+# sleep first
+# wait for the page load (just guess I need), if not:
+# NoSuchElementException: Message: no such element: Unable to locate element:
+# {"method":"css selector","selector":".container"}
+time.sleep(1)
+
 # 0. anchor: fixed
 
 index = driver.find_element_by_class_name("index")
@@ -101,3 +110,31 @@ driver.execute_script("""
     var leaflet_map = arguments[0];
     leaflet_map.parentNode.removeChild(leaflet_map)
     """, leaflet_map)
+
+# 4. useless info in basic-info
+
+infos = driver.find_element_by_class_name("basic-info").find_elements_by_xpath("*")
+
+for info in infos[1:]:
+    driver.execute_script("""
+        var info = arguments[0];
+        info.parentNode.removeChild(info)
+        """, info)
+
+# 5. usless parking_space
+
+parking_spaces = driver.find_element_by_class_name("mb-12px").find_elements_by_xpath("*/*")
+
+for parking_space in parking_spaces[4:]:
+    driver.execute_script("""
+        var parking_space = arguments[0];
+        parking_space.parentNode.removeChild(parking_space)
+        """, parking_space)
+
+# zoomout
+
+driver.execute_script("arguments[0].style.zoom='0.7'", container)
+
+# screenshot
+
+main.screenshot("main.png")
